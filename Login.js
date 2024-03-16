@@ -1,16 +1,22 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { Authcontext } from "../Data/AuthContext";
 
 
 function Login() {
+
+  const authctx=useContext(Authcontext)
   const emailref = useRef();
   const passref = useRef();
+  const [em,setem]=useState()
+  
   function logIn() {
     const email=emailref.current.value
     const password=passref.current.value
+    
     if(!email.includes("@")){
         alert("Enter a valid Email")
     }
@@ -30,7 +36,9 @@ function Login() {
      if(res.ok){
         res.json().then((data)=>{
             console.log(data.idToken)
+           
             localStorage.setItem('token',data.idToken)
+            authctx.Login(data.idToken)
             
          window.location.href = "/welcome";
         })
@@ -40,7 +48,29 @@ function Login() {
          alert("Enter Valid Credentials")
      }
     })
+  }
 
+  async function forgot(){
+    const email=emailref.current.value
+    const data= await fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBWAai-YRPJ8fRwGXSB0LiHg1JkaxQv-zo",
+    {
+      method:"POST",
+      body:JSON.stringify({
+        requestType:"PASSWORD_RESET",
+        email:email,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    if(data.ok){
+      const res= await data.json()
+      console.log(res)
+    }
+    else{
+      const res=await data.json()
+      console.log(res)
+    }
 
   }
   return (
@@ -49,7 +79,7 @@ function Login() {
         <Card
           style={{
             width: "30rem",
-            height: "20rem",
+            height: "22rem",
             display: "center",
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
           }}
@@ -87,6 +117,12 @@ function Login() {
 
               <br></br>
             </Card.Text>
+
+            <Button variant="link" style={{textDecoration:"none"}}
+            onClick={forgot}>Forgot Password?</Button>
+
+
+            <br></br>
             <Button
               variant="primary"
               style={{
