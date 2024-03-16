@@ -1,7 +1,7 @@
 import React from "react";
 import Signuppage from "./Components/Signuppage";
-import Navbarr from "./Components/Navbar";
 import Main from "./Main";
+import CompleteProfile from "./Components/CompleteProfile";
 import Login from "./Components/Login";
 import Welcome from "./Components/Welcome";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -23,6 +23,10 @@ function App(){
         {
           path:"/welcome",
           element:<Welcome/>
+        },
+        {
+          path:"/userdetails",
+          element:<CompleteProfile/>
         }
       ]
     }
