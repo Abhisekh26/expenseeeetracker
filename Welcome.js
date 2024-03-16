@@ -1,6 +1,37 @@
 import React from "react";
+import Button from 'react-bootstrap/Button';
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { Authcontext } from "../Data/AuthContext";
 function Welcome() {
+
+const data=useContext(Authcontext)
+const gettoken=data.token
+
+
+
+async function verifyEmail(){
+  const data= await fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBWAai-YRPJ8fRwGXSB0LiHg1JkaxQv-zo",
+  {
+  method:"POST",
+  body:JSON.stringify({
+    requestType:  "VERIFY_EMAIL",
+    idToken: gettoken
+  }),
+  headers: {
+    "Content-Type": "application/json",
+  },
+  })
+  if(data.ok){
+    const response=await data.json()
+    console.log(response)
+  }
+  else {
+    console.log(data.json())
+  }
+
+}
+
   return (
     <>
       <ul>
@@ -25,6 +56,11 @@ function Welcome() {
           </h4>
         </li>
       </ul>
+
+      <center>
+      <Button variant="link" style={{textDecoration: "none",fontSize:"30px"}} 
+      onClick={verifyEmail}>Verify Your Email</Button>
+      </center>
     </>
   );
 }
