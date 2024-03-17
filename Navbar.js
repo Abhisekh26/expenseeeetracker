@@ -31,8 +31,10 @@ function Navbarr() {
             >
               Home
             </NavLink>
+        {loggedin &&
+
             <NavLink
-              to="/expense"
+              to="/expenseform"
               style={{
                 textDecoration: "none",
                 paddingTop: "10px",
@@ -43,6 +45,7 @@ function Navbarr() {
             >
               Expense
             </NavLink>
+}
           </Nav>
           {!loggedin ? (
             <NavLink to="/login" style={{ textDecoration: "none" }}>
@@ -73,7 +76,7 @@ function Navbarr() {
               >
                 Profile
               </NavLink>
-              <NavLink to="/login">
+              <NavLink to="/signup">
                 <Button
                   variant="link"
                   onClick={logout}
